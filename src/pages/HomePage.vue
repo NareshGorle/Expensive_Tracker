@@ -81,7 +81,7 @@
                   :class="usePosNegColors(transaction.amount)">
                    {{  useFormate(transaction.amount) }} 
                  </div>
-                 <div class="text-caption on-right text-grey-6">{{ todaysDate }}</div>     
+                 <div class="text-caption on-right text-grey-6">{{todaysDate(transaction.createdDate, 'DD MMM ')  }}</div>     
 
             </div> 
             </div>
@@ -101,7 +101,6 @@ import { usePosNegColors } from 'src/use/usePosNegColors';
 import { uid,useQuasar,date } from 'quasar';
 
 
-
 const $q = useQuasar()
 
 const transactions = ref([
@@ -109,23 +108,26 @@ const transactions = ref([
         id: 'id1',
         name: 'Salary',
         amount: 49999,
+        createdDate: Date.now()
       },
       {
         id: 'id2',
         name: 'Movie',
         amount: -499,
-        
+        createdDate: Date.now()
       },
       {
         id: 'id3',
         name: 'Room',
         amount: -2999,
+        createdDate: Date.now()
+         
       },
             {
         id: 'id4',
         name: 'Interest',
         amount: 0,
-        
+        createdDate: Date.now()
       }
       ])
 
@@ -142,13 +144,14 @@ const transactions = ref([
   //  add entry 
    const addTransaction = reactive({
     name:'',
-    amount: null
+    amount: null,
+
     
    })
   
      const TransactionFormReset =() =>{
       addTransaction.name = "",
-      addTransaction.amount = null
+      addTransaction.amount = null,
       nameRef.value.focus()
      }
 
@@ -157,6 +160,8 @@ const transactions = ref([
         id: uid(),
         name:addTransaction.name,
         amount:addTransaction.amount,
+        createdDate: Date.now(),
+        
      }
      $q.notify({
       message:'Transaction Added',
@@ -203,10 +208,9 @@ const transactions = ref([
      })
 }
 
- const todaysDate = computed(()=>{
-  let timeStamp = Date.now()
-  return  date.formatDate(timeStamp,'D MMM')
- })
+ const todaysDate = (timestamp, format = 'DD MMM')=>{
+  return  date.formatDate(timestamp,format) 
+ }
 
 const saveToLocalStorage = () =>{
   localStorage.setItem('transactions', JSON.stringify(transactions.value))
