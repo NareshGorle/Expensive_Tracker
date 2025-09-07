@@ -11,6 +11,13 @@
           </div>
         </q-toolbar-title>
 
+        <div 
+        class="q-pa-md" 
+        v-if="authStore.user.id" >
+          {{ authStore.user.email }}
+          </div>
+          
+          
       </q-toolbar>
     </q-header>
 
@@ -40,8 +47,10 @@
 <script setup>
 import { ref } from 'vue'
 import NavLink from 'src/components/Menu/NavLink.vue'
+import { useAuthStore } from 'src/stores/authStore'
 
 
+const authStore = useAuthStore()
 
 const NavLinks = [
   {
